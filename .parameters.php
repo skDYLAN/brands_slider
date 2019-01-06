@@ -42,6 +42,12 @@ $arComponentParameters = array(
             "TYPE" => "CHECKBOX",
             "ADDITIONAL_VALUES" => "Y",
         ),
+        "MAIN_PAGE" => array(
+            "PARENT" => "BASE",
+            "NAME" => GetMessage("STLW_LISTOFBRANDS_PARAMS_ONLY_WITH_DISPLAY_PARAM"),
+            "TYPE" => "CHECKBOX",
+            "ADDITIONAL_VALUES" => "Y",
+        ),
         'CACHE_TIME' => array('DEFAULT' => 36000000),
     ),
 );
