@@ -8,13 +8,12 @@ $arTypesEx = CIBlockParameters::GetIBlockTypes(array("-"=>" "));
 
 $arIBlocks=array();
 $db_iblock = CIBlock::GetList(array("SORT"=>"ASC"), array("SITE_ID"=>$_REQUEST["site"], "TYPE" => ($arCurrentValues["IBLOCK_TYPE"]!= "-" ? $arCurrentValues["IBLOCK_TYPE"] : "")));
-while($arRes = $db_iblock->Fetch())
-    $arIBlocks[$arRes["ID"]] = "[".$arRes["ID"]."] ".$arRes["NAME"];
-
-// спиосок секций
-$db_iblock = CIBlockSection::GetList(array("SORT"=>"ASC"),["IBLOCK_ID" => ($arCurrentValues["IBLOCK_ID"]!= "-" ? $arCurrentValues["IBLOCK_ID"] : "")], false);
-while ($arRes = $db_iblock->Fetch())
-    $arSection[$arRes["ID"]] = "[".$arRes["ID"]."] ".$arRes["NAME"];
+while($arRes = $db_iblock->Fetch()) {
+    if($arCurrentValues["USE_CODE"] === "N")
+        $arIBlocks[$arRes["ID"]] = "[" . $arRes["ID"] . "] " . $arRes["NAME"];
+    else
+        $arIBlocks[$arRes["CODE"]] = "[" . $arRes["CODE"] . "] " . $arRes["NAME"];
+}
 
 $arComponentParameters = array(
     "GROUPS" => array(
@@ -28,12 +27,18 @@ $arComponentParameters = array(
             "DEFAULT" => "pars_movies",
             "REFRESH" => "Y",
         ),
+        "USE_CODE" => array(
+            "PARENT" => "BASE",
+            "NAME" => GetMessage("STLW_LISTOFBRANDS_USE_CODE"),
+            "TYPE" => "CHECKBOX",
+            "DEFAULT" => "N",
+            "REFRESH" => "Y"
+        ),
         "IBLOCK_ID" => array(
             "PARENT" => "BASE",
             "NAME" => GetMessage("STLW_LISTOFBRANDS_PARAMS_IBLOCK"),
             "TYPE" => "LIST",
             "VALUES" => $arIBlocks,
-            "ADDITIONAL_VALUES" => "Y",
             "MULTIPLE" => "Y"
         ),
         "ONLY_WITH_DISPLAY_PARAM" => array(
@@ -44,7 +49,7 @@ $arComponentParameters = array(
         ),
         "MAIN_PAGE" => array(
             "PARENT" => "BASE",
-            "NAME" => GetMessage("STLW_LISTOFBRANDS_PARAMS_ONLY_WITH_DISPLAY_PARAM"),
+            "NAME" => GetMessage("STLW_LISTOFBRANDS_MAIN_PAGE"),
             "TYPE" => "CHECKBOX",
             "ADDITIONAL_VALUES" => "Y",
         ),
