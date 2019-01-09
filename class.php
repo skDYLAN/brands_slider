@@ -5,11 +5,13 @@ class CBitrixBrandsSlider extends CBitrixComponent{
         $this->arParams['IBLOCK_COUNT'] = (int)$this->arParams['IBLOCK_COUNT'];
         $this->arParams['ONLY_WITH_DISPLAY_PARAM'] = $this->arParams['ONLY_WITH_DISPLAY_PARAM'] === "Y" ? true : false;
         $this->arParams['MAIN_PAGE'] = $this->arParams['MAIN_PAGE'] === "Y" ? true : false;
+        $this->arParams['USE_CODE'] = $this->arParams['USE_CODE'] === "Y" ? true : false;
         if(!isset($arParams["CACHE_TIME"]))
             $arParams["CACHE_TIME"] = 36000000;
     }
     public function setArResult()
     {
+        print_r($this->arParams["IBLOCK_ID"]);
         $arFilter = ['ACTIVE' => 'Y', "IBLOCK_TYPE" => $this->arParams['IBLOCK_TYPE']];
         $arSelect = ['ID', 'NAME', "PROPERTY_LINK", "PROPERTY_DISPLAY_ON_MAIN", "PREVIEW_PICTURE"];
         foreach ($this->arParams["IBLOCK_ID"] as $iblockID) {
@@ -17,7 +19,11 @@ class CBitrixBrandsSlider extends CBitrixComponent{
             if (!intval($iblockID))
                 continue;
 
-            $arFilter["IBLOCK_ID"] = $iblockID;
+            if($this->arParams['USE_CODE'])
+                $arFilter["IBLOCK_CODE "] = $iblockID;
+            else
+                $arFilter["IBLOCK_ID"] = $iblockID;
+
             $r = CIBlockElement::GetList(["name" => "ASC"], $arFilter, false, false, $arSelect);
             while ($res = $r->Fetch()) {
 
