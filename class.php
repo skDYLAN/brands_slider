@@ -11,14 +11,12 @@ class CBitrixBrandsSlider extends CBitrixComponent{
     }
     public function setArResult()
     {
-        print_r($this->arParams["IBLOCK_ID"]);
         $arFilter = ['ACTIVE' => 'Y', "IBLOCK_TYPE" => $this->arParams['IBLOCK_TYPE']];
         $arSelect = ['ID', 'NAME', "PROPERTY_LINK", "PROPERTY_DISPLAY_ON_MAIN", "PREVIEW_PICTURE"];
         foreach ($this->arParams["IBLOCK_ID"] as $iblockID) {
 
             if ($iblockID == false)
                 continue;
-
 
             if($this->arParams['USE_CODE']){
                 $arFilter["IBLOCK_CODE"] = $iblockID;
